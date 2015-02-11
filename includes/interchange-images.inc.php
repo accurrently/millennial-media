@@ -3,31 +3,20 @@
  * Gets interchange images for screens
  */
 
-require_once( get_stylesheet_directory() . '/includes/retina.inc.php' );
-/*
-$interchange_img = '';
-if( has_post_thumbnail() ) {
-	$md_img = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'medium' );
-	$lg_img = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'large' );
-	
-	$interchange_img = 'data-interchange="[' . $md_img[0] . ', (medium)], [' . $lg_img[0] . ', (large)]"';
-}*/
-
-function _mm_get_long_side( $size ) {
+function mm_get_long_side( $size ) {
 	global $_wp_additional_image_sizes;
 	if( is_array($size) && isset($size[0]) ) {
 		return ( isset( $size[1] ) && $size[1] > $size[0] ) ? $size[1] : $size[0];
 	} else if( is_string($size) && $_size_object = $_wp_additional_image_sizes[$size] ) {
 		if( isset ($_wp_additional_image_sizes[$size][0]) ) {
-			return isset($_wp_additional_image_sizes[$size][1]) && $_wp_additional_image_sizes[$size][1] > $_wp_additional_image_sizes[$size][0]	?
-							$_wp_additional_image_sizes[$size][1] : $_wp_additional_image_sizes[$size][0];
+			return isset($_wp_additional_image_sizes[$size][1]) && $_wp_additional_image_sizes[$size][1] > $_wp_additional_image_sizes[$size][0] ? $_wp_additional_image_sizes[$size][1] : $_wp_additional_image_sizes[$size][0];
 		}
 	}
 	return 0;
 }
 
 function mm_is_size_lte( $size, $slug = 'medium' ) {
-	return _mm_get_long_side( $size ) <= _mm_get_long_side( 'mm-' . $slug );
+	return mm_get_long_side( $size ) <= mm_get_long_side( 'mm-' . $slug );
 }
 
 function get_interchange_sizes( $size ) {
@@ -55,18 +44,25 @@ function get_interchange_sizes( $size ) {
 function mm_make_interchange_attr( $id, $sizes, $type = '' ) {
 	$html_inter = 'data-interchange="';
 	$first = true;
-	foreach( $sizes as $_i => $_size_slug ) {
+	$typeslug = '';
+	if( isset($type) ) {
+		$typeslug = '-' . $type;
+	}
+	foreach( $sizes as $_size_slug ) {
 		if( !$first ) {
 			$html_inter .= ', ';
 		} else {
 			$first = false;
 		}
-		$url_normal = wp_get_attachment_image_src( $id, 'mm-' . $_size_slug . '-' . $type );
-		$url_retina = wp_get_attachment_image_src( $id, 'mm-' . $_size_slug . '-' . $type . '-retina' );
-		$html_inter .= '[' . esc_attr($url_normal) . ', (' . $_size_slug . ')], ';
-		$html_inter .= '[' . esc_attr($url_retina) . ', (' . $_size_slug . 'retina)]';		
+		if( is_string($_size_slug) ) {
+			$url_normal = wp_get_attachment_image_src( $id, 'mm-' . $_size_slug . $typeslug );
+			$url_retina = wp_get_attachment_image_src( $id, 'mm-' . $_size_slug . $typeslug . '-retina' );
+			$html_inter .= '[' . esc_attr($url_normal[0]) . ', (' . $_size_slug . ')], ';
+			$html_inter .= '[' . esc_attr($url_retina[0]) . ', (' . $_size_slug . 'retina)]';
+		}
 	}
 	$html_inter .= '" ';
+	return $html_inter;
 }
 
 /**
@@ -98,15 +94,37 @@ function mm_get_img_tag( $html, $id, $alt, $title, $align, $size = 'medium' ) {
 	// This is the size we'll retrieve
 	$sizes = get_interchange_sizes($size);
 		
-	$html_inter = mm_maker_interchange_attr( $id, $sizes );
+	$html_inter = mm_make_interchange_attr( $id, $sizes );
 	
 	return '<img ' . $html_id . $html_inter . $html_class . $html_w . $html_h . $html_alt . ' />';
 }
 add_filter( 'get_image_tag', 'mm_get_img_tag' );
 
-function mm_interchange_header_attr($id){
+/**
+ * Makes creates the interchange attribute for header images.
+ * @attr mixed $id The ID of the post. Defaults to false.
+ * @return string a data-interchange HTML attribute
+ */
+function mm_interchange_header_attr($id = false){
+	$theid = $id;
+	if ($theid === false ) {
+		/**
+		 * From Nick Ohrn's blog.
+		 * @see http://nickohrn.com/2013/09/get-attachment-id-wordpress-header-image/
+		 */
+		$data = get_theme_mod('header_image_data');
+		$attachment_id = is_array($data) && isset($data['attachment_id']) ? $data['attachment_id'] : false;
+		if($attachment_id) {
+			$theid = $attachment_id;
+		}
+		else {
+			return ''; 
+		}
+	}
+	// back to business
+	
 	$sizes = array( 'small', 'medium', 'large', 'xlarge');
-	return mm_make_interchange_attr( $id, $sizes, 'header' );
+	return mm_make_interchange_attr( $theid, $sizes, 'header' );
 	
 }
 

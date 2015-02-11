@@ -10,14 +10,14 @@ include( get_stylesheet_directory() . '/includes/prep-article.inc.php' );
 
 	/* style="background-color: <?php background_color(); ?>; background-repeat: no-repeat; background-size: cover;" */
 ?>
-<article id="post-<?php the_ID(); ?>" class="post post-<?php echo get_post_type() ?>" >
-	<div <?php echo $interchange_img; ?> >
+<article id="post-<?php the_ID(); ?>" class="post post-<?php echo get_post_type(); ?>" >
+	<header <?php echo mm_interchange_header_attr(get_post_thumbnail_id()); ?> >
 		<div class="row" >
 			<div class="small-12 large-8 large-centered columns text-center" style="color: <?php header_textcolor(); ?>;">
 				<h1><?php the_title(); ?></h1>
 			</div>
 		</div>
-	</div>
+	</header>
 	<div class="row">
 		<div class="small-12 medium-8 columns">
 			<div class="row post-meta">

@@ -18,9 +18,8 @@ require_once( get_stylesheet_directory() . '/includes/sticky-scroller.inc.php' )
 		$query = new WP_Query( $args );
 		
 		if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post();
-			include( get_stylesheet_directory() . '/includes/interchange-images.inc.php' );
 		?>
-		<div <?php echo $interchange_img; ?>>
+		<div <?php echo mm_make_interchange_attr(get_post_thumbnail_id(), array( 'small', 'medium', 'large', 'xlarge'));   ?>>
 			<h2><?php the_title(); ?></h2>
 		</div>
 		<?php endwhile; endif; ?>

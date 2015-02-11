@@ -19,6 +19,9 @@ add_theme_support( 'title-tag' );
 
 // Get support for Retina and making sure WP doesn't mess with our file uploads
 require_once( get_stylesheet_directory() . '/includes/retina.inc.php' );
+// Get support for interchange implementation
+require_once( get_stylesheet_directory() . '/includes/interchange-images.inc.php' );
+
 
 
 
@@ -49,13 +52,17 @@ add_retina_image_size( 'mm-xlarge-header', 1920, 400, true );
  * Enqueue all the javascripts we know we'll need. 
  * Small snippets get enqueued when they're used.
  */
-function enqueue_and_register_mm_scripts(){
+function mm_enqueue_scripts(){
 
     // Load up Foundation
 	wp_enqueue_script( 'foundation-min', 'https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/foundation.min.js', array( 'jquery' ), '', true );
 	
+	// Load up stylesheets
+	wp_enqueue_style( 'css-foundation', get_stylesheet_directory_uri() . '/css/foundation.css', array(), '1.0');
+	wp_enqueue_style( 'css-normalize', get_stylesheet_directory_uri() . '/css/normalize.css', array(), '1.0');
+	
 }
-add_action( 'wp_enqueue_scripts', 'enqueue_and_register_mm_scripts' );
+add_action( 'wp_enqueue_scripts', 'mm_enqueue_scripts' );
 
 /**
  * Starts Foundation

@@ -10,7 +10,7 @@
 	<?php if ( has_post_thumbnail() ) : ?>
 	<div class="small-3 columns">
 		<a href="<?php the_permalink(); ?>">
-			<?php the_post_thumbnail( 'thumbnail', array( 'style' => 'max-width: 100%; height: auto;' ) ); ?>
+			<?php the_post_thumbnail( 'small', array( 'style' => 'max-width: 100%; height: auto;' ) ); ?>
 		</a>
 	</div>
 	<div class="small-9 columns">

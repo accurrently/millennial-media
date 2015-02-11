@@ -5,13 +5,15 @@
 * Default display
 */
 
-include_once( get_stylesheet_directory() . '/includes/interchange-images.inc.php' );
+
 ?>
 <?php get_header(); ?>
-		<header class="row" role="banner" style="background-color: <?php background_color(); ?>; background-image: url(<?php header_image(); ?>); background-repeat: no-repeat; background-size: cover;" <?php echo $interchange_img; ?>>
-			<div class="small-12 large-8 large-center columns text-center" style="color: <?php header_textcolor(); ?>;">
-				<h1><?php bloginfo('name'); ?></h1>
-				<p><?php bloginfo('description'); ?></p>
+		<header class="imageheader" role="banner" style="background-color: <?php background_color(); ?>; background-image: url(<?php header_image(); ?>); background-repeat: no-repeat; background-size: cover;" <?php echo mm_interchange_header_attr(); ?>>
+			<div class="row">
+				<div class="small-12 large-8 large-center columns text-center" style="color: <?php header_textcolor(); ?>;">
+					<h1><?php bloginfo('name'); ?></h1>
+					<p><?php bloginfo('description'); ?></p>
+				</div>
 			</div>
 		</header>
 		<?php get_template_part('modules/sticky-scroller'); ?>

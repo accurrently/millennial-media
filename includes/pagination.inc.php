@@ -25,30 +25,30 @@ function the_Foundation_pagination( $args = array() ) {
 	$search_ellipsis = 'page-numbers dots';
 	$search_current = 'page-numbers current';
 	
-	echo '<ul class="pagination">\n';
+	echo '<ul class="pagination">' . "\n";
 	$i =0;
 	$len = count( $links );
 	foreach( $links as $link ) {
 		// Check to see if we need to add an "arrow" class.
 		// WordPress doesn't print prev and next links if they don't exist.
 		if( ($i == 0 && strpos($link, $search_before) !== false) || ( $i == $len - 1 && strpos($link, $search_after) !== false ) ) {
-			echo '\t<li class="arrow">' . $link . '</li>\n';
+			echo "\t" . '<li class="arrow">' . $link . '</li>' . "\n";
 		}
 		// Check for current page
 		else if( strpos($link, $search_current) !== false ) {
-			echo '\t<li class="current">' . $link . '</li>\n';
+			echo "\t" . '<li class="current">' . $link . '</li>' . "\n";
 		}
 		// Check for ellipsis
 		else if( strpos($link, $search_ellipsis) !== false ) {
-			echo '\t<li class="unavailable">' . $link . '</li>\n';
+			echo "\t" . '<li class="unavailable">' . $link . '</li>' . "\n";
 		}
 		// For all other links
 		else {
-			echo '\t<li>' . $link . '</li>\n';
+			echo "\t" . '<li>' . $link . '</li>' . "\n";
 		}
 		$i++;
 	}
-	echo '</ul>\n';
+	echo '</ul>' . "\n";
 }
 
 ?>

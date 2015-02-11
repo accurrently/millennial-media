@@ -4,7 +4,7 @@
  * 
  */
 
-include_once( get_stylesheet_directory() . '/includes/interchange-images.inc.php' );
+
 
 $author_gravatar = get_avatar(  get_the_author_meta( 'ID' ), 150 );
 
