@@ -1,0 +1,19 @@
+/*
+Theme Name: Millennial Media
+Theme URI: http://alexthejourno.com
+Author: Alex Campbell
+Author URI: http://alexthejourno.com
+Description: A theme based on Zurb Foundation
+Version: 1.0
+License: GNU General Public License v3 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: responsive, mobile, grid
+Text Domain: millennial-media
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+*/
+
+@import "css/foundation.css";
+@import "css/normalize.css";
+
